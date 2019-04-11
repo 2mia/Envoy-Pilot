@@ -25,6 +25,7 @@
     "envoy/config/accesslog/v2",
     "envoy/config/filter/accesslog/v2",
     "envoy/config/filter/http/health_check/v2",
+    "envoy/config/filter/http/lua/v2",
     "envoy/config/filter/network/http_connection_manager/v2",
     "envoy/service/discovery/v2",
     "envoy/type",

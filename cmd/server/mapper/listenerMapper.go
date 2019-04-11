@@ -20,7 +20,7 @@ import (
 	envoy_api_v2_route "github.com/envoyproxy/go-control-plane/envoy/api/v2/route"
 	als "github.com/envoyproxy/go-control-plane/envoy/config/accesslog/v2"
 	alf "github.com/envoyproxy/go-control-plane/envoy/config/filter/accesslog/v2"
-	hc "github.com/envoyproxy/go-control-plane/envoy/config/filter/http/health_check/v2"
+	lua "github.com/envoyproxy/go-control-plane/envoy/config/filter/http/lua/v2"
 	hcm "github.com/envoyproxy/go-control-plane/envoy/config/filter/network/http_connection_manager/v2"
 	"github.com/gogo/protobuf/proto"
 	"github.com/gogo/protobuf/types"
@@ -199,11 +199,10 @@ func buildHttpFilter(rawConfig interface{}) []*hcm.HttpFilter {
 		}
 		if filterMap["config"] != nil {
 			configMap := toMap(filterMap["config"])
-			hfconfig2 := hc.HealthCheck{
-				PassThroughMode: &types.BoolValue{Value: getBoolean(configMap, "pass_through_mode")},
-				Endpoint:        getString(configMap, "endpoint"),
+			luaconfig2 := lua.Lua{
+				InlineCode: getString(configMap, "inline_code"),
 			}
-			pbConfig2, err := util.MessageToStruct(&hfconfig2)
+			pbConfig2, err := util.MessageToStruct(&luaconfig2)
 			if err != nil {
 				log.Panic(err)
 			}
